@@ -11,7 +11,7 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int BANNER_HEIGHT = 50;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-    static final int DELAY = 75;
+    static final int DELAY = 85;
 
     final int x[] = new int[GAME_UNITS];
     final int y[] = new int[GAME_UNITS];
@@ -62,7 +62,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if (running == true) {
 
             g.setColor(Color.white);
-            g.fillRect(0, SCREEN_HEIGHT , SCREEN_WIDTH, BANNER_HEIGHT);
+            g.fillRect(0, SCREEN_HEIGHT , SCREEN_WIDTH, SCREEN_HEIGHT + BANNER_HEIGHT);
 
             // for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
             //     g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
@@ -165,7 +165,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // checks if head touches bottom
 
-        if (y[0] > SCREEN_HEIGHT) {
+        if (y[0] > SCREEN_HEIGHT  ) {
             running = false;
         }
 
