@@ -1,5 +1,5 @@
-import javax.swing.JFRAME;
+import javax.swing.JFrame;
 
-public class GameFrame extends JFRAME {
+public class GameFrame extends JFrame {
     
 }
