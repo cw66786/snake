@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
+    static final int BANNER_HEIGHT = 50;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
     static final int DELAY = 75;
@@ -29,9 +30,11 @@ public class GamePanel extends JPanel implements ActionListener {
     GamePanel() {
         random = new Random();
 
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT + BANNER_HEIGHT));
 
         this.setBackground(Color.BLACK);
+
+        
 
         this.setFocusable(true);
 
@@ -58,6 +61,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
         if (running == true) {
 
+            g.setColor(Color.white);
+            g.fillRect(0, SCREEN_HEIGHT , SCREEN_WIDTH, BANNER_HEIGHT);
+
             // for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
             //     g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
             //     g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
@@ -77,9 +83,9 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
             }
             g.setColor(Color.red);
-            g.setFont(new Font("Ink Free", Font.BOLD, 20));
+            g.setFont(new Font("Ink Free", Font.BOLD, 30));
             FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Score: "+foodEaten,(SCREEN_WIDTH - metrics.stringWidth("Score: "+foodEaten))/2, g.getFont().getSize());
+            g.drawString("Score: "+foodEaten,(SCREEN_WIDTH - metrics.stringWidth("Score: "+foodEaten))/2, SCREEN_HEIGHT + BANNER_HEIGHT - 15);
 
         }else{
             gameOver(g);
@@ -92,7 +98,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void newFood() {
         foodX = random.nextInt((int) (SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
-        foodY = random.nextInt((int) (SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
+        foodY = random.nextInt((int) (SCREEN_HEIGHT  / UNIT_SIZE)) * UNIT_SIZE;
 
     }
 
@@ -172,9 +178,9 @@ public class GamePanel extends JPanel implements ActionListener {
     public void gameOver(Graphics g) {
         //score
         g.setColor(Color.red);
-        g.setFont(new Font("Ink Free", Font.BOLD, 20));
+        g.setFont(new Font("Ink Free", Font.BOLD, 50));
         FontMetrics scoreMetrics = getFontMetrics(g.getFont());
-        g.drawString("Score: "+foodEaten,(SCREEN_WIDTH - scoreMetrics.stringWidth("Score: "+foodEaten))/2, g.getFont().getSize());
+        g.drawString("Score: "+foodEaten,(SCREEN_WIDTH - scoreMetrics.stringWidth("Score: "+foodEaten))/2, SCREEN_HEIGHT/2 + 110 );
 
         //game over
         g.setColor(Color.red);
