@@ -11,10 +11,10 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int BANNER_HEIGHT = 50;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-    static final int DELAY = 75;
+    static final int DELAY = 90;
 
-    final int x[] = new int[GAME_UNITS];
-    final int y[] = new int[GAME_UNITS];
+     int x[] = new int[GAME_UNITS];
+     int y[] = new int[GAME_UNITS];
 
     int bodyParts = 6;
     int foodEaten;
@@ -23,6 +23,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
     char direction = 'R';
     boolean running = false;
+    boolean startScreen = true;
+    boolean gameIsOver = false;
 
     Timer timer;
     Random random;
@@ -38,10 +40,15 @@ public class GamePanel extends JPanel implements ActionListener {
 
         this.setFocusable(true);
 
-        this.addKeyListener(new MyKeyAdapter());
+        
+        this.addKeyListener( new MyKeyAdapter());
 
-        startGame();
+       
     }
+
+    
+
+    
 
     public void startGame() {
         newFood();
@@ -58,8 +65,11 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void draw(Graphics g) {
+        
 
-        if (running == true) {
+        if(startScreen == true){
+            createStartScreen(g);
+        }else if (running == true) {
 
             g.setColor(Color.white);
             g.fillRect(0, SCREEN_HEIGHT , SCREEN_WIDTH, SCREEN_HEIGHT + BANNER_HEIGHT);
@@ -153,7 +163,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // checks if head touches right bordrer
 
-        if (x[0] > SCREEN_WIDTH) {
+        if (x[0] + UNIT_SIZE > SCREEN_WIDTH) {
             running = false;
         }
 
@@ -165,7 +175,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // checks if head touches bottom
 
-        if (y[0] > SCREEN_HEIGHT  ) {
+        if (y[0] + UNIT_SIZE > SCREEN_HEIGHT  ) {
             running = false;
         }
 
@@ -188,6 +198,44 @@ public class GamePanel extends JPanel implements ActionListener {
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString("Game Over",(SCREEN_WIDTH - metrics.stringWidth("Game Over"))/2, SCREEN_HEIGHT/2);
 
+        //restart text
+        g.setColor(Color.red);
+        g.setFont(new Font("Ink Free", Font.BOLD, 20));
+        FontMetrics restartMetrics = getFontMetrics(g.getFont());
+        g.drawString("Press SPACEBAR to Restart",(SCREEN_WIDTH - restartMetrics.stringWidth("Press SPACEBAR to Restart"))/2, SCREEN_HEIGHT/2 + 180 );
+
+       gameIsOver = true;
+       
+
+    }
+
+    public void createStartScreen(Graphics g){
+         //score
+         g.setColor(Color.red);
+         g.setFont(new Font("Ink Free", Font.BOLD, 20));
+         FontMetrics scoreMetrics = getFontMetrics(g.getFont());
+         g.drawString("Press SPACEBAR to Start",(SCREEN_WIDTH - scoreMetrics.stringWidth("Press SPACEBAR to Start"))/2, SCREEN_HEIGHT/2 + 110 );
+ 
+         //game over
+         g.setColor(Color.red);
+         g.setFont(new Font("Ink Free", Font.BOLD, 75));
+         FontMetrics metrics = getFontMetrics(g.getFont());
+         g.drawString("SNAKE",(SCREEN_WIDTH - metrics.stringWidth("SNAKE"))/2, SCREEN_HEIGHT/2);
+ 
+
+    }
+
+    public void resetSnake(){
+        bodyParts = 6;
+        foodEaten = 0;
+        direction = 'R';
+        
+
+        
+           
+       x = new int[GAME_UNITS];
+       y = new int[GAME_UNITS];
+       
     }
 
     @Override
@@ -201,8 +249,9 @@ public class GamePanel extends JPanel implements ActionListener {
         repaint();
     }
 
-    public class MyKeyAdapter extends KeyAdapter {
-        @Override
+    public class MyKeyAdapter extends KeyAdapter implements KeyListener  {
+      
+      @Override
         public void keyPressed(KeyEvent e) {
 
             switch (e.getKeyCode()) {
@@ -230,7 +279,46 @@ public class GamePanel extends JPanel implements ActionListener {
                         direction = 'D';
                     }
                     break;
+
+                case KeyEvent.VK_SPACE:
+                    if (startScreen == true && running == false) {
+                        startScreen = !startScreen;
+                    
+                        running = !running;
+                        startGame();
+                    }else if(gameIsOver == true && running == false){
+                        gameIsOver = !gameIsOver;
+                        running = !running;
+                        
+                        resetSnake();
+                        
+                        startGame();
+
+                        
+                    }
+                    break;
             }
         }
+
+   
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
     }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
+    }
+
+    
+
+       
+    }
+
+
+   
 }
